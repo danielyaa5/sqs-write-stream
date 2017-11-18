@@ -1,0 +1,25 @@
+{
+  "name": "sqs-write-stream",
+  "version": "1.0.0",
+  "description": "A Node.js write stream which writes to SQS.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielyaa5/sqs-write-stream.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielyaa5/sqs-write-stream/issues"
+  },
+  "homepage": "https://github.com/danielyaa5/sqs-write-stream#readme",
+  "dependencies": {
+    "aws-sdk": "^2.153.0",
+    "joi": "^13.0.2",
+    "lodash": "^4.17.4",
+    "uuid": "^3.1.0"
+  }
+}
