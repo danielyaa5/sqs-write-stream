@@ -10,6 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/danielyaa5/sqs-write-stream.git"
   },
+  "keywords": [
+    "DynamoDB",
+    "SQS",
+    "Node",
+    "Node.js",
+    "Nodejs",
+    "JavaScript",
+    "AWS",
+    "aws-sdk",
+    "stream",
+    "streams"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
