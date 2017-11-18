@@ -1,6 +1,9 @@
 # SQS Write Stream
 Create a writable stream to send your SQS messages.
 
+## Installation
+`npm i -S sqs-write-stream`
+
 ## Requirements
 Requires Node 8.0 or greater
 
