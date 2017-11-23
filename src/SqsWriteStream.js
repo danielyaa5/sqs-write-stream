@@ -29,7 +29,10 @@ class SqsWriteStream extends stream.Writable {
     super({ objectMode: true });
 
     // validation
-    Joi.assert(queueUrl, Joi.string().min(1).required());
+    Joi.assert(queue, Joi.object({
+      url: Joi.string().min(1),
+      name: Joi.string().min(1)
+    }).required());
     Joi.assert(options, Joi.object());
 
     this.options = _.defaultsDeep(options, defaultOptions);
