@@ -18,13 +18,14 @@ const defaultOptions = {
  */
 class SqsWriteStream extends stream.Writable {
   /**
-   * @param {String} queueUrl
+   * Must provide queueName or queueUrl
+   * @param {Object} queue - An object with either the QueueUrl or QueueName
    * @param {Object} [options]
    * @param {Object} [options.batchSize = 10]
    * @param {Object} [options.MessageGroupId]
    * @param {Object} [options.config = {}]
    */
-  constructor(queueUrl, options) {
+  constructor(queue, options) {
     super({ objectMode: true });
 
     // validation
@@ -34,15 +35,26 @@ class SqsWriteStream extends stream.Writable {
     this.options = _.defaultsDeep(options, defaultOptions);
     this.sqs = new SQS(this.options.config);
     this.buffer = [];
-    this.queueUrl = queueUrl;
+    this.queueName = queue.name;
+    this.queueUrl = queue.url;
 
     this.emit('streamConstructed', queueUrl, options);
   }
 
 
+  async getQueueUrl() {
+    const params = {
+      QueueName: this.queueName
+    };
+    this.queueUrl = await sqs.getQueueUrl(params).promise();
+  };
+
   async _write(obj, enc, cb) {
     this.emit('msgReceived', obj);
     try {
+      if (!this.queueUrl) {
+        await this.getQueueUrl();
+      }
       if (this.buffer.length === this.options.batchSize) {
         await this.sqs.sendMessageBatch({ Entries: this.buffer, QueueUrl: this.queueUrl }).promise();
       } else {

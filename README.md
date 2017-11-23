@@ -7,10 +7,13 @@ Create a writable stream to send your SQS messages.
 ## Requirements
 Requires Node 8.0 or greater
 
+## Usage
+First argument is an object that must have either a name or url for the queue
+
 ## Additional Stream Events
 ```
 const SqsWriteStream = require('sqs-write-stream');
-const rs = new  SqsWriteStream(queueUrl, options);
+const rs = new  SqsWriteStream({ url: QueueUrl }, options);
 
 rs.on('streamConstructed',
     (queueUrl, options) => console.info(queueUrl, options));
