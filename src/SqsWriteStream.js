@@ -41,7 +41,7 @@ class SqsWriteStream extends stream.Writable {
     this.queueName = queue.name;
     this.queueUrl = queue.url;
 
-    this.emit('streamConstructed', queueUrl, options);
+    this.emit('streamConstructed', queue, options);
   }
 
 
@@ -49,7 +49,7 @@ class SqsWriteStream extends stream.Writable {
     const params = {
       QueueName: this.queueName
     };
-    this.queueUrl = await sqs.getQueueUrl(params).promise();
+    this.queueUrl = await this.sqs.getQueueUrl(params).promise();
   };
 
   async _write(obj, enc, cb) {

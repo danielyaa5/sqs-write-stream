@@ -13,10 +13,10 @@ First argument is an object that must have either a name or url for the queue
 ## Additional Stream Events
 ```
 const SqsWriteStream = require('sqs-write-stream');
-const rs = new  SqsWriteStream({ url: QueueUrl }, options);
+const rs = new  SqsWriteStream({ url: 'http://blabla.com' }, options);
 
 rs.on('streamConstructed',
-    (queueUrl, options) => console.info(queueUrl, options));
+    (queue, options) => console.info(queue, options));
 
 rs.on('msgReceived', msg => console.info(msg));
 
