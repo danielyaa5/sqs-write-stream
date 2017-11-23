@@ -1,6 +1,6 @@
 {
   "name": "sqs-write-stream",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Node.js write stream which writes to SQS.",
   "main": "src/index.js",
   "scripts": {
