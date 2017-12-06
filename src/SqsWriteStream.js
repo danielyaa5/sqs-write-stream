@@ -36,7 +36,7 @@ class SqsWriteStream extends stream.Writable {
     Joi.assert(options, Joi.object());
 
     this.options = _.defaultsDeep(options, defaultOptions);
-    this.sqs = new SQS(this.options.config);
+    this.sqs = this.options.sqs || new SQS(this.options.config);
     this.buffer = [];
     this.queueName = queue.name;
     this.queueUrl = queue.url;
