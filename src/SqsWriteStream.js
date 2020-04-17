@@ -58,20 +58,25 @@ class SqsWriteStream extends stream.Writable {
       if (!this.queueUrl) {
         await this.getQueueUrl();
       }
-      if (this.buffer.length === this.options.batchSize) {
-        await this.sqs.sendMessageBatch({ Entries: this.buffer, QueueUrl: this.queueUrl }).promise();
+
+      // construct message
+      const sqsMsg = _.clone(obj);
+      if (obj.Id && obj.MessageBody) {
+        this.buffer.push(sqsMsg);
       } else {
-        const sqsMsg = _.clone(obj);
-        if (obj.Id && obj.MessageBody) {
-          this.buffer.push(sqsMsg);
-        } else {
-          const msg = { MessageBody: JSON.stringify(obj), Id: uuidv4() };
-          if (this.options.MessageGroupId) {
-            msg.MessageGroupId = this.options.MessageGroupId;
-          }
-          this.buffer.push(msg);
+        const msg = { MessageBody: JSON.stringify(obj), Id: uuidv4() };
+        if (this.options.MessageGroupId) {
+          msg.MessageGroupId = this.options.MessageGroupId;
         }
+        this.buffer.push(msg);
       }
+
+      // send message by batch
+      if (this.buffer.length >= this.options.batchSize) {
+        //console.log("_write() - sending sqs message: " + JSON.stringify(this.buffer));
+        await this.sqs.sendMessageBatch({ Entries: this.buffer, QueueUrl: this.queueUrl }).promise();
+        this.buffer = [];
+      } 
 
       this.emit('msgProcessed', obj);
       return cb();
@@ -85,6 +90,7 @@ class SqsWriteStream extends stream.Writable {
     try {
       if (this.buffer.length > 0) {
         await this.sqs.sendMessageBatch({ Entries: this.buffer, QueueUrl: this.queueUrl }).promise();
+        this.buffer = [];
       }
 
       return cb();
